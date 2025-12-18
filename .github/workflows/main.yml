@@ -1,1 +1,30 @@
-hello
+name: Deploy Static Site with Docker (Self-Hosted)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -t static-nginx-app .
+
+      - name: Stop existing container (if running)
+        run: |
+          docker stop static-nginx-container || true
+          docker rm static-nginx-container || true
+
+      - name: Run new container
+        run: |
+          docker run -d \
+            --name static-nginx-container \
+            -p 80:80 \
+            static-nginx-app
