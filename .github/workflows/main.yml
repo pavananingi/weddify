@@ -16,7 +16,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t static-nginx-app .
+          sudo docker build -t static-nginx-app .
 
       - name: Stop existing container (if running)
         run: |
